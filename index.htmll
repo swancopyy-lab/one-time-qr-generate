@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>مولد باركود للضيوف</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  body { font-family: Arial; text-align: center; padding: 30px; }
+  textarea { width: 300px; height: 200px; font-size: 16px; }
+  button { padding: 10px 20px; font-size: 16px; margin-top: 10px; }
+  .barcode { display: inline-block; margin: 15px; }
+</style>
+</head>
+<body>
+
+<h2>اكتب أسماء الضيوف سطر بسطر</h2>
+<textarea id="namesBox" placeholder="ليلى&#10;حنان&#10;نورة"></textarea><br>
+<button onclick="generateBarcodes()">توليد الباركودات</button>
+
+<div id="barcodes"></div>
+
+<script>
+function generateBarcodes() {
+  const textArea = document.getElementById('namesBox');
+  const barcodesDiv = document.getElementById('barcodes');
+  barcodesDiv.innerHTML = ''; // مسح الباركودات القديمة
+
+  const names = textArea.value.split('\n').map(n => n.trim()).filter(n => n !== '');
+  
+  names.forEach(name => {
+    const container = document.createElement('div');
+    container.className = 'barcode';
+    const title = document.createElement('p');
+    title.textContent = name;
+    container.appendChild(title);
+
+    const qrDiv = document.createElement('div');
+    container.appendChild(qrDiv);
+
+    new QRCode(qrDiv, {
+      text: name,
+      width: 150,
+      height: 150
+    });
+
+    barcodesDiv.appendChild(container);
+  });
+}
+</script>
+
+</body>
+</html>
